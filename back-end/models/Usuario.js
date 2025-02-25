@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { DataTypes } = require('sequelize')
+const { sequelize } = require('../config/db')
 const bcrypt = require('bcryptjs')
 
 const Usuario = sequelize.define('Usuario', {
@@ -30,7 +30,7 @@ const Usuario = sequelize.define('Usuario', {
 }, {
     hooks: {
         beforeCreate: async (usuario) => {
-            const salt = bcrypt.genSalt(10)
+            const salt = await bcrypt.genSalt(10)
             usuario.senha = await bcrypt.hash(usuario.senha, salt)
         }
     }

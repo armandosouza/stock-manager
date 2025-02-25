@@ -1,6 +1,9 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+
 const {Usuario} = require('../models/Usuario')
+
 const router = express.Router()
 
 // cadastro de usuários
@@ -50,6 +53,4 @@ router.post('/login', async (req, res) => {
     }
 })
 
-module.exports = {
-    router
-}
+module.exports = router
