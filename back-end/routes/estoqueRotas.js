@@ -3,6 +3,7 @@ const express = require('express')
 const {HistoricoEstoque} = require('../models/HistoricoEstoque')
 const {Produto} = require('../models/Produto')
 const autenticarToken = require('../middlewares/auth')
+const { Op } = require('sequelize')
 
 const router = express.Router()
 
@@ -51,6 +52,36 @@ router.post('/estoque/saida', autenticarToken, async (req, res) => {
         res.status(201).json({msg: 'Movimentação de saída criada com sucesso!'})
     } catch(error) {
         res.status(500).json({msg: 'Houve um erro ao criar saída de estoque!', error})
+    }
+})
+
+// Obter movimentações de estoque de um produto
+router.get('/estoque/:id', autenticarToken, async (req, res) => {
+    try {
+        const produtoId = req.params.id
+        const {dataInicio, dataFim} = req.query
+
+        const produto = await Produto.findByPk(produtoId)
+        if(!produto) {
+            return res.status(404).json({msg: 'Produto não encontrado!'})
+        }
+
+        const filtro = {
+            where: {
+                produtoId
+            }
+        }
+
+        if(dataInicio || dataFim) {
+            filtro.where.createdAt = {
+                [Op.between]: [new Date(dataInicio ? dataInicio : null), new Date(dataFim ? dataFim : null)]
+            }
+        }
+
+        const historico = await HistoricoEstoque.findAll(filtro)
+        return res.status(200).json(historico)
+    } catch(error) {
+        return res.status(500).json({msg: 'Houve um erro ao obter histórico do estoque', error})
     }
 })
 
