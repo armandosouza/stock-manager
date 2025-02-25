@@ -2,7 +2,6 @@ const express = require('express')
 
 const {Produto} = require('../models/Produto')
 const {Categoria} = require('../models/Categoria')
-
 const autenticarToken = require('../middlewares/auth')
 
 const router = express.Router()
@@ -10,14 +9,14 @@ const router = express.Router()
 //Criar um novo produto
 router.post('/produto', autenticarToken, async (req, res) => {
     try {
-        const {nome, descricao, quantidade_em_estoque, preco, categoriaId} = req.body
+        const {nome, descricao, quantidade_em_loja, preco, categoriaId} = req.body
 
-        if(!nome || !descricao || !quantidade_em_estoque || !preco || !categoriaId) {
+        if(!nome || !descricao || !quantidade_em_loja || !preco || !categoriaId) {
             return res.status(404).json({msg: "Campo inválido ou em branco!"})
         }
 
         await Produto.create({
-            nome, descricao, quantidade_em_estoque, preco, categoriaId
+            nome, descricao, quantidade_em_loja, preco, categoriaId
         })
 
         res.status(201).json({

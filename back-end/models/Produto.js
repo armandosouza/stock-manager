@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize')
 const { sequelize } = require('../config/db')
-const { HistoricoEstoque } = require('./HistoricoEstoque')
-const { Categoria } = require('./Categoria')
 
 const Produto = sequelize.define('Produto', {
     nome: {
@@ -11,7 +9,7 @@ const Produto = sequelize.define('Produto', {
     descricao: {
         type: DataTypes.STRING,
     },
-    quantidade_em_estoque: {
+    quantidade_em_loja: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0

@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require('../config/db')
-const { Produto } = require('./Produto')
 
 const HistoricoEstoque = sequelize.define('HistoricoEstoque', {
     tipo: {
